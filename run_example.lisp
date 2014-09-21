@@ -106,27 +106,7 @@
 	((= (length str) 1) (string (char str 0)))
 	(t (split str sep))))
 
-(defun change-tag ()
-  ;(print current-tag)
-  (when (not (null current-tag))
-    
-    (push current-tag list-of-tag))
-  (setf current-tag (make-instance 'tag))
-  (print current-tag)
-  (when (null first-tag) (setf first-tag current-tag)))
-  
 
-(defun back-tag ()
-  (print (format nil "~A - tagbuf" tagbuf))
-  (print (format nil "~A - current-tag" (tag-tag current-tag)))
-  (if (equal tagbuf (tag-tag current-tag))
-      (progn (when (not(null (car list-of-tag))) 
-	       (print (tag-tag (car list-of-tag))))
-       (when (not (null (car list-of-tag)))
-	(print "check")
-	(add (car list-of-tag) current-tag)
-	(setf current-tag (pop list-of-tag))))
-    (print "wrong parsing")))
   
   
 (defun analiz-init (str)
@@ -135,32 +115,61 @@
 	(newtagflag 0)
 	(backtagflag 0)
 	(contentflag 0)
-	(current-tag nil)
+	(current-tag (make-instance 'tag))
 	(first-tag nil)
-	
+	(list-of-tag nil)
 	(contentbuf "")
 	(taglist nil)
 	(tagbuf "")
 	(attrlist nil)
-	(attrbuf ""))  
+	(attrbuf ""))
+    (defun change-tag ()
+      ;(print current-tag)
+      (when (not (null current-tag))
+    
+	(push current-tag list-of-tag))
+      (setf current-tag (make-instance 'tag))
+      (print current-tag)
+      (when (null first-tag) (setf first-tag current-tag)))
+  
+
+    (defun back-tag ()
+      (print (format nil "~A - tagbuf" tagbuf))
+      (print (format nil "~A - current-tag" (tag-tag current-tag)))
+      (if (equal tagbuf (tag-tag current-tag))
+	  (progn (when (not(null (car list-of-tag))) 
+		   (print (tag-tag (car list-of-tag))))
+		 (when (not (null (car list-of-tag)))
+		   (print "check")
+		   (add (car list-of-tag) current-tag)
+		   (setf current-tag (pop list-of-tag))))
+	(print "wrong parsing")))
+    (defmacro when-flag (name current-tag)
+      (let ((flag (read-from-string (concatenate 'string (string name) "flag")))
+	    (cl (read-from-string (concatenate 'string  "tag-" (string name) )))
+	    (buf (read-from-string (concatenate 'string (string name) "buf"))))
+	`(when (= ,flag 1)
+	   (setf ,flag 0)
+	   (setf (,cl  ,current-tag) ,buf)
+	   (setf ,buf ""))))
     (defun analizator (chr)
       (case chr
 	(#\< (setf tagflag 1)
-         (when-flag "content")
+         (when-flag "content" current-tag )
 	 (setf newtagflag 1))
 
 	(#\Space (when (= tagflag 1)
 		   (setf attrflag 1))
-	 (when-flag tag))
+	 (when-flag tag current-tag))
      
 	(#\/ (when (= newtagflag 1)
 	       (setf newtagflag 0)
 	       (setf backtagflag 1)))
 	   
-	(#\> (when-flag attr)
+	(#\> (when-flag attr current-tag)
          (setf contentflag 1)
 	 (when (= backtagflag 0)
-	   (when-flag "tag"))
+	   (when-flag "tag"  current-tag   ))
 	 (when (= backtagflag 1)
 	   (setf backtagflag 0)
 	   (back-tag)
@@ -190,13 +199,14 @@
     (setf x 1)))
 
 
-(defmacro when-flag (name)
+
+(defmacro when-flag (name current-tag)
   (let ((flag (read-from-string (concatenate 'string (string name) "flag")))
 	(cl (read-from-string (concatenate 'string  "tag-" (string name) )))
 	(buf (read-from-string (concatenate 'string (string name) "buf"))))
     `(when (= ,flag 1)
        (setf ,flag 0)
-       (setf (,cl current-tag) ,buf)
+       (setf (,cl  ,current-tag) ,buf)
        (setf ,buf ""))))
        
        
@@ -215,3 +225,5 @@
       (setf b 4))
     (retro)
     a))
+
+
