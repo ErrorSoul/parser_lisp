@@ -107,56 +107,74 @@
 	(t (split str sep))))
 
 (defun change-tag ()
+  ;(print current-tag)
   (when (not (null current-tag))
     
     (push current-tag list-of-tag))
-  (setf current-tag (make-instance 'tag)))
+  (setf current-tag (make-instance 'tag))
+  (print current-tag)
+  (when (null first-tag) (setf first-tag current-tag)))
+  
 
 (defun back-tag ()
-  (if (equal tagbuf (tag-name current-tag))
-      (when (not (null (car list-of-tag)))
+  (print (format nil "~A - tagbuf" tagbuf))
+  (print (format nil "~A - current-tag" (tag-tag current-tag)))
+  (if (equal tagbuf (tag-tag current-tag))
+      (progn (when (not(null (car list-of-tag))) 
+	       (print (tag-tag (car list-of-tag))))
+       (when (not (null (car list-of-tag)))
+	(print "check")
 	(add (car list-of-tag) current-tag)
-	(setf current-tag (pop list-of-tag)))))
+	(setf current-tag (pop list-of-tag))))
+    (print "wrong parsing")))
   
   
-  
-(defun analizator (chr)
-  (case chr
-    (#\< (setf tagflag 1)
+(defun analiz-init (str)
+  (let ((tagflag 0)
+	(attrflag 0)
+	(newtagflag 0)
+	(backtagflag 0)
+	(contentflag 0)
+	(current-tag nil)
+	(first-tag nil)
+	
+	(contentbuf "")
+	(taglist nil)
+	(tagbuf "")
+	(attrlist nil)
+	(attrbuf ""))  
+    (defun analizator (chr)
+      (case chr
+	(#\< (setf tagflag 1)
          (when-flag "content")
 	 (setf newtagflag 1))
 
-    (#\Space (when (= tagflag 1)
-	       (setf attrflag 1))
-             (when-flag tag))
+	(#\Space (when (= tagflag 1)
+		   (setf attrflag 1))
+	 (when-flag tag))
      
-    (#\/ (when (= newtagflag 1)
-	   (setf newtagflag 0)
-	   (setf backtagflag 1)))
+	(#\/ (when (= newtagflag 1)
+	       (setf newtagflag 0)
+	       (setf backtagflag 1)))
 	   
-    (#\> (when-flag attr)
+	(#\> (when-flag attr)
          (setf contentflag 1)
 	 (when (= backtagflag 0)
 	   (when-flag "tag"))
 	 (when (= backtagflag 1)
 	   (setf backtagflag 0)
-	   (back-tag)))
-
-    (otherwise (cond
-		 ((= newtagflag 1) (setf newtagflag 0) (change-tag) (setf tagbuf (addc tagbuf chr)))
-		 ((= tagflag 1) (setf tagbuf (addc tagbuf chr)))
-		 ((= attrflag 1) (setf attrbuf (addc attrbuf chr)))
-		 ((= contentflag 1) (setf contentbuf (addc contentbuf chr)))))))
-
-
-(defun analiz-init (str)
-  (let ((tagflag 0)
-	(attrflag 0)
-	(newtagflag 0)
-	(taglist nil)
-	(tagbuf "")
-	(attrlist nil)
-	(attrbuf ""))
+	   (back-tag)
+	   (when (= tagflag 1)
+	     (setf tagflag 0)
+	     (setf tagbuf ""))))
+	
+	(otherwise (cond
+		    ((= newtagflag 1) (setf newtagflag 0) (change-tag) (setf tagbuf (addc tagbuf chr)))
+		    ((= tagflag 1) (setf tagbuf (addc tagbuf chr)))
+		    ((= attrflag 1) (setf attrbuf (addc attrbuf chr)))
+		    ((= contentflag 1) (setf contentbuf (addc contentbuf chr)))))))
+    (map nil #'analizator str)
+    first-tag))
 	
 
 
@@ -174,11 +192,26 @@
 
 (defmacro when-flag (name)
   (let ((flag (read-from-string (concatenate 'string (string name) "flag")))
-	(lst (read-from-string (concatenate 'string (string name) "list")))
+	(cl (read-from-string (concatenate 'string  "tag-" (string name) )))
 	(buf (read-from-string (concatenate 'string (string name) "buf"))))
     `(when (= ,flag 1)
        (setf ,flag 0)
-       (push ,buf ,lst)
+       (setf (,cl current-tag) ,buf)
        (setf ,buf ""))))
        
        
+(setf s "<div class=\"form-group\"> <label for=\"exampleInputEmail1\">Email address</label><input type=\"email\" class=\"form-control\" id=\"exampleInputEmail1\" placeholder=\"Enter email\"></div>")
+(setf st #\< bt #\> sl #\/)
+
+(defun reset ()
+(SETF TAGBUF "" ATTRBUF "" CONTENTBUF "" LIST-OF-TAG NIL TAGFLAG 0 ATTRFLAG 0 BACKTAGFLAG 0 NEWTAGFLAG 0 CONTENTFLAG 0 first-tag nil current-tag nil))
+
+
+(defun xar ()
+  (let ((a 1)
+	(b 0))
+    (defun retro ()
+      (setf a 5)
+      (setf b 4))
+    (retro)
+    a))
