@@ -1,0 +1,15 @@
+.form-group
+  %label.com-sm-2.control-label(for='inputEmail')
+    EMAIL
+  .col-md-10
+    %input#inputEMAIL.form-control(type='email' placeholder='Email')
+.form-group
+  %label.com-sm-2.control-label(for='inputEmail')
+    EMAIL
+  .col-md-10
+    %input#inputEMAIL.form-control(type='email' placeholder='Email')
+.form-group
+  %label.com-sm-2.control-label(for='inputEmail')
+    EMAIL
+  .col-md-10
+    %input#inputEMAIL.form-control(type='email' placeholder='Email')

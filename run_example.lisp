@@ -115,7 +115,7 @@
 	(newtagflag 0)
 	(backtagflag 0)
 	(contentflag 0)
-	(current-tag (make-instance 'tag))
+	(current-tag )
 	(first-tag nil)
 	(list-of-tag nil)
 	(contentbuf "")
