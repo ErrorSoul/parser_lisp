@@ -11,7 +11,7 @@
 
    (attribute :accessor tag-attr
 	      :initarg :attribute
-	      :initform (make-hash-table))
+	      :initform "")
    (intags    :accessor tag-intags
 	      :initform '())))
 	      
@@ -19,26 +19,70 @@
   (setf (tag-intags x) (append (tag-intags x) (list new_tag))))
 
 
+(defmethod recur-print ((x tag))
+  (if (null x) 
+      (print "need not null argument")
+	 
+  (let ((counter 1))
+    (defun r-print(counter x)
+      (let ((sp (space_n counter)))
+	(cond ((null x) (print "stop!"))
+	      
+
+	      (t
+	       (format t "~A~A~%" sp (make-string 20 :initial-element #\_))
+	       (format t "~ATag  <~A>~%" sp (tag-tag x))
+	       (format t "~AAttr ~A~%" sp (tag-attr x))
+	       (format t "~AContent ~A~%" sp (tag-content x))
+	       
+	       (if (not (null (tag-intags x)))
+		   (mapcar (lambda (z) (r-print (* 3 counter) z)) (tag-intags x)))))))
+    (r-print counter x))))
+
+
+
+(defmethod recur-print ((x tag))
+  (let ((counter 1))
+    (defun r-print(counter x)
+      (let ((sp (space_n counter)))
+	(cond ((null (tag-intags x))
+	       (format t "~ATag  <~A>~%" sp (tag-tag x))
+	       (format t "~AAttr ~A~%" sp (tag-attr x))
+	       (format t "~AContent ~A~%" sp (tag-content x)))
+
+	     ((consp (tag-intags x))
+	       (mapcar (lambda (z) (r-print (* counter 3) z)) (tag-intags x))))))
+    (r-print counter x)))
+
+
 (defclass storage ()
   ((name  :accessor name
 	  :initarg  :name
 	  :initform "")
 
-   (flag  :accessor flag
+   (flag  :accessor flag-host
 	  :initarg  :flag
-	  :initform nil)
+	  :initform (make-instance 'flag))
    
    (buf   :accessor buf
 	  :initarg  :buf
 	  :initform "")))
 
+(defmethod flag ((s storage))
+  (flag-init (flag-host s)))
 
 (defmethod change-flag ((s storage))
-  (setf (flag s) (not (flag s))))
+  (change-flag (flag-host s)))
+
+(defmethod on-flag ((s storage))
+  (on (flag-host s)))
+
+(defmethod off-flag ((s storage))
+  (off (flag-host s)))
 
 
 (defmethod reset-flag ((s storage))
-  (setf (flag s) nil))
+  (off (flag-host s)))
 
 (defmethod reset-buf ((s storage))
   (setf (buf s) ""))
@@ -59,6 +103,48 @@
 		:initform (make-instance 'tag))))
 
 
+
+
+
+(defclass flag ()
+  ((flag :accessor flag-init
+	 :initarg :flag
+	 :initform nil)))
+
+(defmethod on ((f flag))
+  (setf (flag-init f) t))
+
+(defmethod off ((f flag))
+  (setf (flag-init f) nil))
+
+(defmethod change-flag ((f flag))
+  (setf (flag-init f) (not (flag-init f))))
+
+
+(defun addc (str chr)
+  (concatenate 'string str (list chr)))
+
+(defun space_n (n)
+  (make-string n :initial-element #\space))
+
+(defun split (str sep)
+  (let ((acc nil)
+	(buf "")
+	(s (addc str sep)))
+    (defun parser (chr)
+      (cond ((equal chr sep) (progn 
+			       (setf acc (append acc (list buf)))
+			       (setf buf "")))
+	    (t (setf buf (addc buf chr)))))
+    (map nil #'parser s)
+    acc))
+
+
+(defun string-split (str sep)
+  (cond ((string= "" str) ( print nil))
+	((= (length str) 1) (string (char str 0)))
+	(t (split str sep))))
+
 (defmethod when-flag ((s storage) (current-tag tag))
   (when (flag s) 
     (change-flag s)
@@ -70,6 +156,7 @@
       ((equal "content" (name s))
        (setf (tag-content current-tag)(buf s))))
     (reset-buf s)))
+
 
 (defun change-tag(tag-s)
   (if (equal (tag-tag (current-tag tag-s)) "none")
@@ -86,19 +173,30 @@
     (format t "first-tag  ~A\~%" (tag-tag (first-tag tag-s)))))
        
 
-(defun back-tag(tag tag-s)
+(defun back-tag(tag tag-s onetagflag)
   (print (format nil "~A - tagbuf~%" (buf tag)))
   (print (format nil "~A - current-tag~%" (tag-tag (current-tag tag-s))))
-  (if (equal (buf tag) (tag-tag (current-tag tag-s)))
+  (if 
+      (or 
+       (flag-init onetagflag) 
+       (equal (buf tag) (tag-tag (current-tag tag-s))))
       (progn
+	(off onetagflag)
 	(when (not (null (car (list-of-tag tag-s))))
 	  (add (car (list-of-tag tag-s)) (current-tag tag-s))
 	  (setf (current-tag tag-s) (pop (list-of-tag tag-s)))))
     (error "wrong parsing")))
 
+(defun check-onetagelem (current-tag onetagflag)
+  (print "check-onetagelem")
+  (when (member (tag-tag current-tag) '("input") :test #'equal)
+    (print "checkiiiiing")
+    (on onetagflag)))
+
 (defun html_parser (str)
   (let ((newtagflag nil)
-	(backtagflag nil) 
+	(backtagflag )
+	(onetagflag (make-instance 'flag))
 	(tag-s (make-instance 'tag-storage))
 	(tag (make-instance 'storage :name "tag"))
 	(attr (make-instance 'storage :name "attr"))
@@ -108,12 +206,16 @@
 	(#\< 
 	 (change-flag tag)
 	 (when-flag content (current-tag tag-s))
-	 (setf newtagflag t))
+	 (setf newtagflag t)
+	 (when (flag-init onetagflag) 
+	   (back-tag tag tag-s onetagflag)))
 	
 	(#\Space 
 	 (when (flag tag)
 	   (change-flag attr))
-	 (when-flag tag (current-tag tag-s)))
+	 (when-flag tag (current-tag tag-s))
+	 (mapcar (lambda (x) (when (flag x) (add-char x chr)))
+		 (list tag attr content)))
 	
 	(#\/ 
 	 (when newtagflag
@@ -124,10 +226,11 @@
 	 (when-flag attr (current-tag tag-s))
 	 (change-flag content)
 	 (when (not backtagflag)
-	   (when-flag tag (current-tag tag-s)))
+	   (when-flag tag (current-tag tag-s))
+	   (check-onetagelem (current-tag tag-s) onetagflag))
 	 (when backtagflag
 	   (setf backtagflag nil)
-	   (back-tag tag tag-s)
+	   (back-tag tag tag-s onetagflag)
 	   (when (flag tag)
 	     (change-flag tag)
 	     (reset-buf tag))))
@@ -150,3 +253,11 @@
 (setf st #\< bt #\> sl #\/)
 
 (setf h "<div><p>dfjdkf</p></div>")
+
+
+
+
+(defun goro (lst)
+  (cond ((null lst) (print "stop the list"))
+	 ((consp (car lst)) (goro (car lst)) (goro (cdr lst)))
+	 (t (print (car lst)) (goro (cdr lst)))))
