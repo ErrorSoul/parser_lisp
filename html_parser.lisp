@@ -149,7 +149,11 @@
 
 (defun change-tag(tag-s)
   (if (equal (tag-tag (current-tag tag-s)) "none")
-      (setf (current-tag tag-s) (make-instance 'tag))
+      ;(progn (setf (current-tag tag-s) (make-instance 'tag))
+      (progn (setf (tag-tag (current-tag tag-s)) "MAIN")
+	     (setf (first-tag tag-s) (current-tag tag-s))
+	     (push (current-tag tag-s) (list-of-tag tag-s))
+	     (setf (current-tag tag-s) (make-instance 'tag)))
     (progn
       (format t "current-tag ~A~%" (tag-tag (current-tag tag-s)))
       (format t "list of tag ~A~%" (list-of-tag tag-s))
@@ -178,7 +182,10 @@
 
 (defun check-onetagelem (current-tag onetagflag)
   (print "check-onetagelem")
-  (when (member (tag-tag current-tag) '("input") :test #'equal)
+  (when (or
+	 (member (tag-tag current-tag) '("input" "!--" "meta" "link") :test #'equal)
+	 (equal (char (tag-tag current-tag) 0) #\!))
+	   
     (print "checkiiiiing")
     (on onetagflag)))
 
@@ -257,4 +264,4 @@
 	 ((consp (car lst)) (goro (car lst)) (goro (cdr lst)))
 	 (t (print (car lst)) (goro (cdr lst)))))
 
-(recur-print (html_parser "test.html"))
+;(recur-print (html_parser "test.html"))
