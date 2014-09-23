@@ -41,18 +41,7 @@
 
 
 
-(defmethod recur-print ((x tag))
-  (let ((counter 1))
-    (defun r-print(counter x)
-      (let ((sp (space_n counter)))
-	(cond ((null (tag-intags x))
-	       (format t "~ATag  <~A>~%" sp (tag-tag x))
-	       (format t "~AAttr ~A~%" sp (tag-attr x))
-	       (format t "~AContent ~A~%" sp (tag-content x)))
 
-	     ((consp (tag-intags x))
-	       (mapcar (lambda (z) (r-print (* counter 3) z)) (tag-intags x))))))
-    (r-print counter x)))
 
 
 (defclass storage ()
@@ -193,7 +182,7 @@
     (print "checkiiiiing")
     (on onetagflag)))
 
-(defun html_parser (str)
+(defun html_parser (file)
   (let ((newtagflag nil)
 	(backtagflag )
 	(onetagflag (make-instance 'flag))
@@ -201,6 +190,7 @@
 	(tag (make-instance 'storage :name "tag"))
 	(attr (make-instance 'storage :name "attr"))
 	(content (make-instance 'storage :name "content")))
+    
     (defun analizator (chr)
       (case chr
 	(#\< 
@@ -242,7 +232,7 @@
 		    ((flag tag) (add-char tag chr))
 		    ((flag attr) (add-char attr chr))
 		    ((flag content) (add-char content chr))))))
-    (map nil #'analizator str)
+    (file-handler file #'analizator)
     (first-tag tag-s)))
        
 
@@ -255,9 +245,16 @@
 (setf h "<div><p>dfjdkf</p></div>")
 
 
-
+(defun file-handler (file fun)
+  (with-open-file (stream file :direction :input)
+		  (do ((line (read-char stream nil 'eof)
+			     (read-char stream nil 'eof)))
+		      ((eql line 'eof))
+		    (apply fun (list line)))))
 
 (defun goro (lst)
   (cond ((null lst) (print "stop the list"))
 	 ((consp (car lst)) (goro (car lst)) (goro (cdr lst)))
 	 (t (print (car lst)) (goro (cdr lst)))))
+
+(recur-print (html_parser "test.html"))
