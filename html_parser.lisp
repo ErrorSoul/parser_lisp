@@ -11,7 +11,7 @@
 
    (attribute :accessor tag-attr
 	      :initarg :attribute
-	      :initform "")
+	      :initform (make-hash-table :test #'equal))
    (intags    :accessor tag-intags
 	      :initform '())))
 	      
@@ -32,7 +32,11 @@
 	      (t
 	       (format t "~A~A~%" sp (make-string 20 :initial-element #\_))
 	       (format t "~ATag  <~A>~%" sp (tag-tag x))
-	       (format t "~AAttr ~A~%" sp (tag-attr x))
+	       
+	       (format t "~AAttr ~%" sp)
+	       (maphash (lambda (key value) 
+			  (format t "~A~A = ~A~%" sp key value)) 
+			(tag-attr x))
 	       (format t "~AContent ~A~%" sp (tag-content x))
 	       
 	       (if (not (null (tag-intags x)))
@@ -141,7 +145,10 @@
       ((equal "tag" (name s))
        (setf (tag-tag current-tag) (buf s)))
       ((equal "attr" (name s))
-       (setf (tag-attr current-tag) (buf s)))
+       (if (not (equal (char (tag-tag current-tag) 0) #\!))
+	   (attr-handler (buf s) (tag-attr current-tag))
+	 (setf (gethash "comment" (tag-attr current-tag)) (buf s))))
+  
       ((equal "content" (name s))
        (setf (tag-content current-tag)(buf s))))
     (reset-buf s)))
@@ -183,11 +190,17 @@
 (defun check-onetagelem (current-tag onetagflag)
   (print "check-onetagelem")
   (when (or
-	 (member (tag-tag current-tag) '("input" "!--" "meta" "link") :test #'equal)
+	 (member (tag-tag current-tag) '("input" "!--" "meta" "link" "br" "img" "param") :test #'equal)
 	 (equal (char (tag-tag current-tag) 0) #\!))
 	   
     (print "checkiiiiing")
     (on onetagflag)))
+
+
+  
+
+
+
 
 (defun html_parser (file)
   (let ((newtagflag nil)
@@ -244,6 +257,8 @@
        
 
 
+
+
 (defun reset ()
   (setf tag-s (make-instance 'tag-storage) tag (make-instance 'storage :name "tag") content (make-instance 'storage :name "content") attr (make-instance 'storage :name "attr") backtagflag nil newtagflag nil))
 
@@ -259,9 +274,76 @@
 		      ((eql line 'eof))
 		    (apply fun (list line)))))
 
+
+(defun footnoter (char)
+  (cond ((equal char #\>) (format nil "<**FOOT>>>>NOTE**>"))
+	((equal char #\<) (format nil "<**FOOT<<<<NOTE**>"))
+	(t char)))   
+(defun file-writer (file fun)
+  (with-open-file (stream file :direction :input)
+    (with-open-file (out "fileout.txt" :direction :output
+			 :if-exists :supersede)
+		  (do ((line (read-char stream nil 'eof)
+			     (read-char stream nil 'eof)))
+		      ((eql line 'eof))
+		    (format out "~A" (funcall fun line))))))
+ 
+
+(defun counter (file)
+  (let ((counter 0)
+	(lst '()))
+    
+    (defun lil-counter (char)
+      (cond ((equal char #\<) (1+ counter) (push char lst))
+	    ((equal char #\>) (1- counter) (pop  lst))
+	    (t char)))
+    (with-open-file (stream file :direction :input)
+		  (do ((line (read-char stream nil 'eof)
+			     (read-char stream nil 'eof)))
+		      ((eql line 'eof))
+		    (print line)
+		    (cond ((equal line #\<) (setf counter (1+ counter)) (push line lst))
+			  ((equal line #\>) (setf counter (1- counter)) (pop  lst))
+			 (t line))))
+		    (print lst)
+		    (print counter)))
 (defun goro (lst)
   (cond ((null lst) (print "stop the list"))
 	 ((consp (car lst)) (goro (car lst)) (goro (cdr lst)))
 	 (t (print (car lst)) (goro (cdr lst)))))
 
 ;(recur-print (html_parser "test.html"))
+
+
+(defun not-split-inside (string chr)
+  (let ((one-quotes-flag (make-instance 'flag))
+	(two-quotes-flag (make-instance 'flag))
+	(acc nil)
+	(buf "")
+	(str (concatenate 'string string (list chr)))
+	(len (1+ (length string))))
+        
+    (do ((i 0 (1+ i)))
+	((= len i))
+      (cond ((and (equal (char str i) chr)
+	       (and (not (flag-init one-quotes-flag))
+		    (not (flag-init two-quotes-flag)))) (push buf acc) (setf buf ""))
+
+	    ((equal (char str i) #\') (change-flag one-quotes-flag))
+	    ((equal (char str i) #\") (change-flag two-quotes-flag))
+	    (t (setf buf (addc buf (char str i))))))
+    (reverse acc)))
+
+(defun attr-spliter(str ht)
+  (let ((s (string-split str #\=)))
+    (cond ( (= (length s) 1) (setf (gethash (car s) ht) 'true))
+	  (t (setf (gethash (car s) ht) (car(cdr s)))))))
+
+(defun attr-handler (str ht)
+  (let ((sp #\space)
+	(lst (remove-if #'(lambda (x)(equal "" x)) 
+			(not-split-inside str #\space))))
+    (if (not (null lst))
+	(mapcar (lambda (x) (attr-spliter x ht))
+		lst)
+      nil)))

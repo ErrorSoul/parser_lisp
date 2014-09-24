@@ -1,0 +1,494 @@
+.profiles__filter{
+	padding:8px 0 10px;
+}
+
+.profiles__filter.fixed-block{
+	background:#F1F0ED;
+}
+
+.profiles__filter.fixed-block:after {
+	display: block;
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	height: 8px;
+	background: transparent;
+	background: -moz-linear-gradient(top, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0) 100%);
+	background: -webkit-linear-gradient(top, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0) 100%);
+	background: -o-linear-gradient(top, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0) 100%);
+	background: -ms-linear-gradient(top, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0) 100%);
+	background: linear-gradient(top, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0) 100%);
+}
+
+.profiles__filter.fixed-block:before{
+	content:"";
+	position:absolute;
+	left:-4px;
+	right:-4px;
+	top:0;
+	height:100%;
+	background:#F1F0ED;
+	z-index:-1; 
+}
+
+.profiles__filter input[type=text],
+.profiles__filter input[type=search]{
+	width: 340px;
+	max-width: 80%;
+}
+
+.profiles__filter .icon-clear{
+	width:16px;
+	height:16px;
+	color:#fff;
+	background:#F1F0ED;
+	border-radius:8px;
+	cursor:pointer;
+	position:relative;
+	left:-22px;
+	display:inline-block;
+	text-align:center;
+	line-height:16px;
+	font-weight:bold;
+	font-size:14px;
+	vertical-align:middle;
+	top:-9999px;
+}
+
+.profiles__filter .icon-clear:hover{
+	background:#dddbd4;
+}
+
+.profiles__filter .icon-clear.show{
+	top:0;
+}
+
+.profiles__list{
+	list-style: none;
+	padding: 0;
+	margin:0 0 10px;
+}
+
+.profiles__list li{
+	position: relative;
+	height: 58px;
+	background: #fff;
+	-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+	   -moz-box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+			box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+}
+
+.profiles__list li + li{
+	margin-top: 10px;
+}
+
+.profiles__list li > a{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	background: url(../img/blank.gif) -9999px -99999px no-repeat;
+	background: rgba(0, 0, 0, 0);
+}
+
+.profiles__list li > a:hover ~ article .profiles__name{
+	color:#6DC331;
+}
+
+.profiles__list img{
+	width: 58px;
+	height: 58px;
+	left: 0;
+	top: 0;
+	position: absolute;
+	background-color: #ccc;
+	visibility:hidden;
+	z-index:1;
+}
+
+.profiles__list [class*=ico-sport__]{
+	position:absolute;
+	left:3px;
+	top:3px;
+}
+
+.profiles__list article{
+	margin-left:68px;
+}
+
+.profiles__name{
+	font-size: 20px;
+	color: #000;
+	font-weight: 700;
+	padding-top: 2px;
+	margin-bottom: -4px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+}
+
+.profiles__sport{
+	font-size:16px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+}
+
+.profiles__details .profiles__sport{
+	overflow:visible;
+	white-space:normal;
+}
+
+.profiles__sport a{
+	color:#999;
+	text-decoration:none;
+	position:relative;
+	z-index:12;
+}
+
+.profiles__sport a:hover{
+	color:#000;
+}
+
+.profiles__details .profiles__sport a{
+	position:static;
+}
+
+.sports__list{
+	list-style:none;
+	padding:1em 0 0;
+	color:#000;
+	margin:0;
+	display:block !important;
+}
+
+.sports__list li{
+	display:inline-block;
+	vertical-align:top;
+	width: 80px;
+	padding:0 18px 10px 0;
+	height:96px;
+	font-size:10px;
+	line-height:14px;
+}
+
+.sports__list a{
+	color:inherit;
+}
+
+.sports__list a:hover{
+	color:#6DC331;
+}
+
+[class*=ico-sport__]{
+	display:inline-block;
+	vertical-align:middle;
+	background-image:url(../img/icons_sport.png);
+	background-repeat:no-repeat;
+	width:52px;
+	height:51px;
+}
+
+.inlinesvg [class*=ico-sport__]{
+	background-image:url(../img/icons_sport.svg);
+}
+
+.sports__list [class*=ico-sport__]{
+	display:block;
+	margin:0 0 4px;
+}
+
+.ico-sport__alpine-skiing,
+.ico-sport__1{
+	background-position:-8px -8px;
+}
+
+.ico-sport__biathlon,
+.ico-sport__9{
+	background-position:-66px -8px;
+}
+
+.ico-sport__bobsleigh, 
+.ico-sport__11{
+	background-position:-124px -8px;
+}
+
+.ico-sport__cross-skiing,
+.ico-sport__13{
+	background-position:-183px -8px;
+}
+
+.ico-sport__curling,
+.ico-sport__4{
+	background-position:-241px -8px;
+}
+
+.ico-sport__figure-skating,
+.ico-sport__7{
+	background-position:-8px -65px;
+}
+
+.ico-sport__freestyle-aerials,
+.ico-sport__6{
+	background-position:-66px -65px;
+}
+
+.ico-sport__freestyle-halfpipe{
+	background-position:-125px -65px;
+}
+
+.ico-sport__freestyle-mogul{
+	background-position:-184px -65px;
+}
+
+.ico-sport__freestyle-sky-cross{
+	background-position:-241px -65px;
+}
+
+.ico-sport__freestyle-slopestyle{
+	background-position:-7px -123px;
+}
+
+.ico-sport__ice-hockey,
+.ico-sport__8{
+	background-position:-66px -123px;
+}
+
+.ico-sport__luge,
+.ico-sport__15{
+	background-position:-124px -123px;
+}
+
+.ico-sport__nordic-combined,
+.ico-sport__3{
+	background-position:-183px -123px;
+}
+
+.ico-sport__short-track,
+.ico-sport__12{
+	background-position:-241px -123px;
+}
+
+.ico-sport__skeleton,
+.ico-sport__2{
+	background-position:-7px -181px;
+}
+
+.ico-sport__jumping,
+.ico-sport__5{
+	background-position:-66px -181px;
+}
+
+.ico-sport__snowboard-cross{
+	background-position:-125px -182px;
+}
+
+.ico-sport__snowboard-halfpipe,
+.ico-sport__10{
+	background-position:-183px -181px;
+}
+
+.ico-sport__snowboard-parallel{
+	background-position:-241px -182px;
+}
+
+.ico-sport__snowboard-slopestyle{
+	background-position:-7px -240px;
+}
+
+.ico-sport__speed-skating,
+.ico-sport__14{
+	background-position:-66px -239px;
+}
+
+.profiles__photo{
+	float:left;
+	width:150px;
+	margin-right:20px;
+}
+
+.profiles__photo img{
+	width:150px;
+	height:150px;
+	display:none;
+}
+
+.profiles__photo-copyright{
+	background:#ddd;
+	font-size:.85em;
+	color:#888;
+	padding:3px 6px;
+	display:none;
+	line-height:1.35;
+}
+
+.profiles__details{
+	overflow:hidden;
+	font-size:16px;
+	line-height:22px;
+}
+
+.profiles__details header{
+	min-height:51px;
+	padding-left:61px;
+	margin-bottom:8px;
+	position:relative;
+}
+
+.profiles__details header [class*=ico-sport__]{
+	position:absolute;
+	left:0;
+	top:0;
+}
+
+.profiles__details h1{
+	font-size:24px;
+	color:#000;
+	line-height:1;
+	margin:0;
+	font-weight:700;
+	padding:2px 0;
+}
+
+.profiles__sport-head{
+	margin:0 0 20px;
+}
+
+.profiles__sport-head h1{
+	display:inline-block;
+	margin:0;
+	vertical-align:middle;
+	font-size:36px;
+	colot:#000;
+	line-height:1;
+	font-weight:700;
+}
+
+#section_header.olympic-header{
+	background:url(../img/header_olimpic.png) 50% 0 no-repeat !important;
+	background-size: auto 100% !important;
+	width:100%;
+	overflow:hidden;
+	position:relative;
+}
+
+#section_header.olympic-header:after,
+#section_header.olympic-header:before{
+	content:"";
+	position:absolute;
+	height:74px;
+	top:0;
+	width:50%;
+	z-index:-1;
+}
+
+#section_header.olympic-header:before{
+	left:0;
+	background:#63cdf6;
+}
+
+#section_header.olympic-header:after{
+	left:50%;
+	background:#0a3d87;
+}
+
+#section_header.olympic-header aside{
+	color:#000;
+}
+
+.replace-div{
+	display:block !important;
+}
+
+.olimpic-banner-img{
+	max-width:100%;
+}
+
+.profiles__filter-title{
+	display:none;
+}
+
+@media only screen and (max-width:1024px){
+	#section_header.olympic-header:after,
+	#section_header.olympic-header:before{
+		display:none;
+	}
+	
+	#section_header.olympic-header{	
+		padding-bottom:8px;
+	}
+}
+
+@media only screen and (max-width:767px){
+	.profiles__name{
+		font-size:16px;
+		line-height:32px;
+	}
+	
+	.profiles__sport{
+		font-size:14px;
+		line-height:22px;
+	}
+	
+	.profiles__filter-title{
+		display:block;
+		font-size:18px;
+		font-weight:700;
+		margin:0 0 4px;
+	}
+	
+	.profiles__filter input[type=text],
+	.profiles__filter input[type=search]{
+		width: 100%;
+		max-width: 100%;
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		        box-sizing: border-box;
+		border-radius: 3px;
+	}
+	
+	.profiles__filter .input-prepend,
+	.profiles__filter .icon-clear{
+		display:none !important;
+	}
+	
+	.profiles__filter  ::-webkit-input-placeholder {
+		color: transparent;
+		display:none;
+	}
+	
+	.profiles__filter  :-moz-placeholder {
+		color: transparent;
+		display:none;
+	}
+}
+
+@media only screen and (max-width:480px){
+	.profiles__photo{
+		float:none;
+		width:auto;
+		height:auto;
+		margin:0 0 20px;
+		display:inline-block;
+	}
+	
+	.profiles__photo img{
+		width:auto;
+		height:auto;
+		max-width:100%;
+	}
+	
+	#section_header.olympic-header h1{
+		font-size:2em;
+	}
+}
+
+
+
+

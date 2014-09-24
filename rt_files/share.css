@@ -1,0 +1,383 @@
+
+.share-btns {
+	margin:10px 0 15px;
+}
+
+.share__item {
+	display: inline-block;
+	vertical-align: top;
+	height: 20px;
+	margin: 0 7px 10px 0;
+}
+
+.share__item a {
+	display: inline-block;
+	width: 73px;
+	vertical-align: top;
+	height: 20px;
+	line-height: 20px;
+	text-decoration: none;
+	color: #fff;
+	font-size: 12px;
+	border-radius: 3px;
+	height: 20px;
+	position: relative;
+	font-size: 11px;
+	font-family:  'Helvetica Neue', aria, sans-serif;
+	font-weight: bold;
+}
+
+.share__item a i {
+	position: absolute;
+	left:2px;
+	top: 1px;
+	background-image: url(../img/icons-share.svg);
+	background-size: auto 18px;
+	background-repeat: no-repeat;
+	z-index: 3;
+	width: 18px;
+	height: 18px;
+}
+
+.share-btn__gp {
+	background-color: #c13929;
+	width: 22px;
+}
+
+.share-btn__gp:hover {
+	background: rgb(191,74,61);
+	background: -moz-linear-gradient(top,  rgba(191,74,61,1) 0%, rgba(191,19,0,1) 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(191,74,61,1)), color-stop(100%,rgba(191,19,0,1)));
+	background: -webkit-linear-gradient(top,  rgba(191,74,61,1) 0%,rgba(191,19,0,1) 100%);
+	background: -o-linear-gradient(top,  rgba(191,74,61,1) 0%,rgba(191,19,0,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(191,74,61,1) 0%,rgba(191,19,0,1) 100%);
+	background: linear-gradient(to bottom,  rgba(191,74,61,1) 0%,rgba(191,19,0,1) 100%); 
+}
+
+.share-btn__gp i {
+	background-position: 0 0;
+}
+
+.share-btn__fb,
+.share-btn__fb-like{
+	background-color: #3b5999;
+}
+
+.share-btn__fb:hover,
+.share-btn__fb-like:hover {
+	background: rgb(76,104,183);
+	background: -moz-linear-gradient(top,  rgba(76,104,183,1) 0%, rgba(72,94,137,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(76,104,183,1)), color-stop(100%,rgba(72,94,137,1)));
+	background: -webkit-linear-gradient(top,  rgba(76,104,183,1) 0%,rgba(72,94,137,1) 100%);
+	background: -o-linear-gradient(top,  rgba(76,104,183,1) 0%,rgba(72,94,137,1) 100%); 
+	background: -ms-linear-gradient(top,  rgba(76,104,183,1) 0%,rgba(72,94,137,1) 100%); 
+	background: linear-gradient(to bottom,  rgba(76,104,183,1) 0%,rgba(72,94,137,1) 100%);
+}
+
+.share__item .share-btn__fb-like i {
+	background-position: -18px 0;
+	left: 0px;
+	top: 1px;
+	height: 19px;
+	width: 19px;
+	background-size: auto 19px;
+}
+
+.share-btn__tw {
+	background: #00aced;
+}
+
+.share-btn__tw:hover{
+	background: rgb(32,185,255);
+	background: -moz-linear-gradient(top,  rgba(32,185,255,1) 0%, rgba(22,159,201,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(32,185,255,1)), color-stop(100%,rgba(22,159,201,1)));
+	background: -webkit-linear-gradient(top,  rgba(32,185,255,1) 0%,rgba(22,159,201,1) 100%);
+	background: -o-linear-gradient(top,  rgba(32,185,255,1) 0%,rgba(22,159,201,1) 100%); 
+	background: -ms-linear-gradient(top,  rgba(32,185,255,1) 0%,rgba(22,159,201,1) 100%);
+	background: linear-gradient(to bottom,  rgba(32,185,255,1) 0%,rgba(22,159,201,1) 100%);
+}
+
+.share-btn__tw i {
+	background-position: -54px 0;
+}
+
+.share-btn__vk{
+	background-color: #37648e;
+}
+
+.share-btn__vk i {
+	background-position: -36px 0;
+	left: 0 !important;
+}
+
+.share-btn__vk:hover {
+	background: rgb(105,136,168);
+	background: -moz-linear-gradient(top,  rgba(105,136,168,1) 0%, rgba(76,110,146,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(105,136,168,1)), color-stop(100%,rgba(76,110,146,1)));
+	background: -webkit-linear-gradient(top,  rgba(105,136,168,1) 0%,rgba(76,110,146,1) 100%); 
+	background: -o-linear-gradient(top,  rgba(105,136,168,1) 0%,rgba(76,110,146,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(105,136,168,1) 0%,rgba(76,110,146,1) 100%); 
+	background: linear-gradient(to bottom,  rgba(105,136,168,1) 0%,rgba(76,110,146,1) 100%);
+}
+
+.share-btn__ok{
+	background-color: #f57e18;
+}
+
+.share-btn__ok:hover {
+	background: rgb(247,147,61);
+	background: -moz-linear-gradient(top,  rgba(247,147,61,1) 0%, rgba(231,114,13,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(247,147,61,1)), color-stop(100%,rgba(231,114,13,1)));
+	background: -webkit-linear-gradient(top,  rgba(247,147,61,1) 0%,rgba(231,114,13,1) 100%);
+	background: -o-linear-gradient(top,  rgba(247,147,61,1) 0%,rgba(231,114,13,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(247,147,61,1) 0%,rgba(231,114,13,1) 100%);
+	background: linear-gradient(to bottom,  rgba(247,147,61,1) 0%,rgba(231,114,13,1) 100%);
+}
+
+.share-btn__ok i {
+	background-position: -72px 0;
+}
+
+.share__item a + span {
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	border:solid 1px #aaa;
+	text-align: center;
+	padding:0 4px;
+	background: #fff;
+	font-size: 13px;
+	color: #333;
+	height: 18px;
+	line-height: 18px;
+	margin-left: 3px;
+	min-width: 14px;
+}
+
+.share__item a + span:before {
+	content: "";
+	position: absolute;
+	border: solid 4px transparent;
+	border-right-color: #aaa;
+	top: 6px;
+	right: 100%;
+}
+
+.share__item a + span:after {
+	content: "";
+	position: absolute;
+	border: solid 3px transparent;
+	border-right-color: #fff;
+	top: 7px;
+	right: 100%;
+	margin-left: 1px;
+}
+
+.share__item:hover a + span {
+	border-color: #aaa;
+}
+
+.share__item:hover a + span:before {
+	border-right-color: #777;
+}
+
+.share-btns__aside {
+	float:right;
+	padding:0 0 0 16px;
+	border-left:solid 1px #ccc;
+}
+
+.share-btns__aside .print {
+	background: url(/assets/pub/img/print.png) no-repeat;
+	vertical-align:middle;
+	height: 16px;
+	padding: 0 15px 0 16px;
+	cursor: pointer;
+	display:inline-block;
+}
+
+.share-btns__aside .mail {
+	padding: 0 0 0 10px;
+	background: url(/assets/pub/img/mail.png) 0 1px no-repeat;
+	vertical-align:middle;
+	height: 16px;
+	padding: 0 15px 0 16px;
+	cursor: pointer;
+	display:inline-block;
+}
+
+.start-fly-share .share-btns{
+	position: fixed;
+	left: 50%;
+	top: 10px;
+	text-align: center;
+	margin-left: -670px;
+	background: #f1f0ed;
+	opacity:1;
+	-webkit-transition: opacity .25s, z-index .25s;
+	   -moz-transition: opacity .25s, z-index .25s;
+		-ms-transition: opacity .25s, z-index .25s;
+		 -o-transition: opacity .25s, z-index .25s;
+			transition: opacity .25s, z-index .25s;
+	padding:5px 0;
+	width: 70px;
+	z-index: 50;
+}
+
+.hide-fly-share .share-btns{
+	opacity: 0;
+	z-index: -3;
+}
+
+.start-fly-share .share__item {
+	margin:0 0 8px;
+	padding-top: 24px;
+	display: block;
+	position: relative;
+	height: auto;
+}
+
+.start-fly-share .share__item.share__item-like {
+	padding-top: 0;
+}
+
+.start-fly-share .share-btns__aside {
+	float: none;
+	border: 0;
+	left: 0;
+	top: 100%;
+	position: absolute;
+	padding: 0;
+	text-aling: center;
+	width: 100%;
+}
+
+.start-fly-share .share-btns__aside .mail,
+.start-fly-share .share-btns__aside .print {
+	width: 16px;
+	height: 16px;
+	padding: 0; 
+	margin: 0 5px;
+}
+
+.start-fly-share .share__item a {
+	display: block;
+	padding: 0 !important;
+	font-size: 10px;
+	height: 20px;
+	width: auto !important;
+	text-indent: -9999px;
+}
+
+.share__item a.share-btn__gp:after {
+	content: "Google+";
+	font-size: 10px;
+	position: absolute;
+	left: 23px;
+	top: 0;
+	text-indent: 0;
+	text-align: left;
+}
+
+.share__item a.share-btn__fb-like:after {
+	content: "Share";
+	font-size: 10px;
+	position: absolute;
+	left: 28px;
+	top: 0;
+	text-indent: 0;
+	text-align: left;
+}
+
+.share__item a.share-btn__vk:after {
+	content: "Нравится";
+	font-size: 10px;
+	position: absolute;
+	left: 16px;
+	top: 0;
+	text-indent: 0;
+	text-align: left;
+}
+
+.share__item a.share-btn__tw:after {
+	content: "Твитнуть";
+	font-size: 10px;
+	position: absolute;
+	left: 21px;
+	top: 0;
+	text-indent: 0;
+	text-align: left;
+}
+
+.share__item a.share-btn__ok:after {
+	content: "Класс!";
+	font-size: 10px;
+	position: absolute;
+	left: 25px;
+	top: 0;
+	text-indent: 0;
+	text-align: left;
+}
+
+.start-fly-share .share__item a.share-btn__vk i {
+	left: 0;
+}
+
+.start-fly-share .share__item a i {
+	display none;
+}
+
+.start-fly-share .share__item a + span {
+	position: absolute;
+	top: 0;
+	left: 4px;
+	right: 4px;
+	margin: 0;
+	padding: 0;
+}
+
+.start-fly-share .share__item a + span:before {
+	border-color: transparent;
+	border-top-color: #aaa;
+	top: 100%;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	width: 0;
+}
+
+.start-fly-share .share__item a + span:after {
+	border-color: transparent;
+	border-top-color: #fff;
+	top: 100%;
+	left: 0;
+	right: 0;
+	margin: -1px auto 0;
+	width: 0;
+}
+
+.share__item [data-layout="button_count"],
+.start-fly-share .share__item [data-layout="box_count"] {
+	position: static;
+	top: 0;
+}
+
+.start-fly-share .share__item [data-layout="button_count"],
+.share__item [data-layout="box_count"] {
+	position: absolute;
+	top: -9999px;
+}
+
+@media screen and (max-width:1365px) {
+	.start-fly-share .share-btns{
+		margin: 0;
+		left: 5px;
+	}
+}
+
+@media screen and (max-width:1359px) {
+	.start-fly-share .share-btns{
+		top:-99999px !important;
+		left: 0 !important;
+	}
+}
