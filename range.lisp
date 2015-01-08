@@ -14,8 +14,6 @@
 
 
 (defmacro range (start end)
-  (let ((g (gensym))
-	(h (gensym)))
-  `(do ((,g ,start (1+ ,var)) (,h ,end))
+  `(do ((,g ,start (1+ ,g)) (,h ,end))
        ((> ,g ,h))
      (print ,g)))

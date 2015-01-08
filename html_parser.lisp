@@ -190,7 +190,7 @@
 (defun check-onetagelem (current-tag onetagflag)
   (print "check-onetagelem")
   (when (or
-	 (member (tag-tag current-tag) '("input" "!--" "meta" "link" "br" "img" "param") :test #'equal)
+	 (member (tag-tag current-tag) '("input" "!--" "meta" "link" "br" "img" "param" "aside") :test #'equal)
 	 (equal (char (tag-tag current-tag) 0) #\!))
 	   
     (print "checkiiiiing")
@@ -252,7 +252,9 @@
 		    ((flag tag) (add-char tag chr))
 		    ((flag attr) (add-char attr chr))
 		    ((flag content) (add-char content chr))))))
-    (file-handler file #'analizator)
+    ;(counter file #'analizator)
+    (y file #'analizator)
+    ;(file-handler file #'analizator)
     (first-tag tag-s)))
        
 
@@ -276,7 +278,7 @@
 
 
 (defun footnoter (char)
-  (cond ((equal char #\>) (format nil "<**FOOT>>>>NOTE**>"))
+  (cond ((equal char #\>) (format nil "~A" #\z))
 	((equal char #\<) (format nil "<**FOOT<<<<NOTE**>"))
 	(t char)))   
 (defun file-writer (file fun)
@@ -289,24 +291,60 @@
 		    (format out "~A" (funcall fun line))))))
  
 
-(defun counter (file)
-  (let ((counter 0)
-	(lst '()))
-    
-    (defun lil-counter (char)
-      (cond ((equal char #\<) (1+ counter) (push char lst))
-	    ((equal char #\>) (1- counter) (pop  lst))
-	    (t char)))
-    (with-open-file (stream file :direction :input)
+
+(defun x (char)
+  (case char
+    (#\< 0)
+    (#\> 1)
+    (otherwise 2)))
+
+(defun y (file fun)
+  (let ((last-quote #\л)
+	(ya #\я))
+  (with-open-file (stream file :direction :input)
 		  (do ((line (read-char stream nil 'eof)
 			     (read-char stream nil 'eof)))
 		      ((eql line 'eof))
-		    (print line)
-		    (cond ((equal line #\<) (setf counter (1+ counter)) (push line lst))
-			  ((equal line #\>) (setf counter (1- counter)) (pop  lst))
-			 (t line))))
-		    (print lst)
-		    (print counter)))
+		    (case (x line)
+		      ((0 1) (if (equal line last-quote)
+				 (funcall fun ya)
+			       (progn (funcall fun line)
+				      (setf last-quote line))))
+		      (2 (funcall fun line)))))))
+  
+ 
+
+(defun counter (file)
+  (let ((counter 0)
+	(index 0)
+	(lst '())
+	(quotes-list)
+	(coord '()))
+    
+    (defun lil-counter (char)
+      (cond ((equal char #\<) (setf counter (1+ counter))
+	                      (when (equal char (car quotes-list))
+				(format t "char is ~A~%" char)
+				(format t "CAR LST is ~A~%" (car lst))
+				
+				(push (cons index char) coord))
+			      (push char quotes-list)
+			      (push char lst))
+	    ((equal char #\>) (setf counter(1- counter))
+	                      (when (equal char (car quotes-list))
+				
+				(push (cons index char) coord))
+			      (push char quotes-list)
+			      (pop  lst))
+	    (t char))
+      (when char (setf index (1+ index))))
+    
+		    
+      (file-handler file #'lil-counter)
+      (print lst)
+      (print counter)
+      (print quotes-list)
+      (print coord)))
 (defun goro (lst)
   (cond ((null lst) (print "stop the list"))
 	 ((consp (car lst)) (goro (car lst)) (goro (cdr lst)))
